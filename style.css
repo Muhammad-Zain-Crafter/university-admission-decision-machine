@@ -1,0 +1,311 @@
+/* style.css - PROFESSIONAL REVISION */
+:root {
+    /* Updated Color Palette */
+    --color-university-blue: #0A3D62; /* Deep Professional Blue */
+    --color-university-gold: #FFC312; /* Accent Gold */
+    --color-success: #2ecc71;  /* Emerald Green */
+    --color-reject: #e74c3c;   /* Pomegranate Red */
+    --color-info: #3498db;     /* Blue for information/current state */
+    --color-bg: #ecf0f1;       /* Light Grey Background */
+    --color-panel-bg: #ffffff;
+    --font-stack: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+    font-family: var(--font-stack);
+    background-color: var(--color-bg);
+    margin: 0;
+    padding: 0;
+    color: #2c3e50; /* Dark text */
+}
+header {
+    background-color: var(--color-university-blue);
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+.head-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+}
+.nav-logo {
+    font-size: 22px;
+    font-style: italic;    
+}
+#reset-button {
+    background-color: var(--color-university-gold);
+    color: var(--color-university-blue);
+    border: none;
+    padding: 0.6rem;
+    font-size: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+
+}
+.container {
+    display: flex;
+    max-width: 1500px;
+    margin: 30px auto;
+    gap: 30px;
+    padding: 0 30px;
+}
+.panel {
+    background-color: var(--color-panel-bg);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.dfa-panel {
+    flex: 1;
+    min-width: 350px;
+}
+.admission-panel {
+    flex: 2;
+}
+h2 {
+    color: var(--color-university-blue);
+    border-bottom: 2px solid var(--color-university-gold);
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+.state-tag {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: 700;
+    color: white;
+    display: inline-block;
+    margin-right: 8px;
+    font-size: 0.9em;
+}
+
+.s0, .s1, .s2, .s3, .s4 { background-color: var(--color-info); }
+.s5 { background-color: var(--color-success); }
+.s6 { background-color: var(--color-reject); }
+
+#current-state-display {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--color-info);
+    margin-top: 10px;
+}
+#admission-form label {
+    display: block;
+    margin-top: 20px;
+    font-weight: 600;
+    color: #333;
+}
+#admission-form input:not([type="checkbox"]), 
+#admission-form select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border: 1px solid #bdc3c7;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1em;
+    transition: border-color 0.3s;
+}
+
+#admission-form input:focus,
+#admission-form select:focus {
+    border-color: var(--color-university-gold);
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 195, 18, 0.5);
+}
+
+.action-btn, #run-test-button {
+    background-color: var(--color-university-gold);
+    color: var(--color-university-blue);
+    border: none;
+    padding: 12px 25px;
+    font-size: 1em;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 25px;
+    font-weight: 700;
+    transition: background-color 0.3s;
+}
+
+.action-btn:hover, #reset-button:hover, #run-test-button:hover {
+    background-color: #f39c12;
+}
+
+/* --- Log Styling --- */
+#history-log {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+#history-log li {
+    padding: 12px;
+    border-left: 5px solid var(--color-university-blue);
+    margin-bottom: 10px;
+    background-color: #f7f9fb;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.log-fail {
+    border-left-color: var(--color-reject) !important;
+    background-color: #fef5f5;
+}
+
+/* --- Result Dashboard --- */
+#result-dashboard {
+    padding: 30px;
+    border-radius: 8px;
+    margin-top: 30px;
+    font-size: 1.1em;
+}
+
+.result-accepted {
+    background-color: #eafaf1;
+    border: 3px solid var(--color-success);
+}
+
+.result-rejected {
+    background-color: #fef5f5;
+    border: 3px solid var(--color-reject);
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media (max-width: 1200px) {
+    .container {
+        flex-direction: column;
+        padding: 0 20px;
+        gap: 20px;
+    }
+
+    .dfa-panel, .admission-panel {
+        min-width: 100%;
+        flex: unset;
+    }
+}
+
+/* Smaller tablets / large phones */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
+        text-align: center;
+    }
+
+    #reset-button {
+        width: 100%;
+        font-size: 16px;
+        padding: 0.5rem;
+    }
+
+    #current-state-display {
+        font-size: 1.3em;
+    }
+
+    .action-btn, #run-test-button {
+        width: 100%;
+        font-size: 0.95em;
+        padding: 10px 20px;
+    }
+
+    #admission-form input:not([type="checkbox"]), 
+    #admission-form select {
+        font-size: 0.95em;
+        padding: 10px;
+    }
+
+    #history-log li {
+        padding: 10px;
+        font-size: 0.9em;
+    }
+
+    #result-dashboard {
+        padding: 20px;
+        font-size: 1em;
+    }
+
+    #test-log {
+        font-size: 0.85em;
+        padding: 10px;
+        max-height: 150px;
+    }
+}
+
+/* Mobile Phones (small devices) */
+@media (max-width: 480px) {
+    header {
+        padding: 12px;
+    }
+
+    .nav-logo {
+        font-size: 18px;
+    }
+
+    #reset-button {
+        font-size: 14px;
+        padding: 0.4rem;
+    }
+
+    h2 {
+        font-size: 1.4em;
+    }
+
+    #current-state-display {
+        font-size: 1.2em;
+    }
+
+    .action-btn, #run-test-button {
+        font-size: 0.9em;
+        padding: 8px 15px;
+    }
+
+    #admission-form label {
+        font-size: 0.9em;
+        margin-top: 15px;
+    }
+
+    #admission-form input:not([type="checkbox"]), 
+    #admission-form select {
+        padding: 8px;
+    }
+
+    #history-log li {
+        font-size: 0.85em;
+        padding: 8px;
+    }
+
+    #result-dashboard {
+        padding: 15px;
+        font-size: 0.95em;
+    }
+    #test-log {
+        font-size: 0.8em;
+        padding: 8px;
+        max-height: 120px;
+    }
+}
+
+/* Checkbox & Activity section responsive */
+.activity-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+@media (min-width: 600px) {
+    .activity-checkboxes {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .activity-checkboxes label {
+        flex: 1 1 45%;
+    }
+}
