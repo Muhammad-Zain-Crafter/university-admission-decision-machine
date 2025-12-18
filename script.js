@@ -17,7 +17,6 @@ document
 
     studentInfo = {
       name: studentName.value,
-      father: fatherName.value,
       regNo: regNo.value,
       program: program.value,
     };
@@ -37,8 +36,6 @@ const THRESHOLDS = {
 
   // S3: Minimum required activities
   ACTIVITIES_MIN: 2,
-
-  // S4: Interview Thresholds
   INTERVIEW_PASS: 50, // Minimum % for acceptance
 
   // Total Maximum Scores
@@ -69,7 +66,7 @@ function transition(current, inputs) {
   let nextState = "S6"; // Default fail state
   let outcome = "Rejected";
   let condition = "Transition Failed: Criteria not met.";
-  let score = 0; // Score generated at this stage
+  let score = 0; 
 
   // Reset scholarship tier before S2 transition
   if (current === "S0") scholarshipTier = 0;
@@ -147,8 +144,6 @@ function transition(current, inputs) {
       score = inputs.interviewPercentage;
 
       if (score >= THRESHOLDS.INTERVIEW_PASS) {
-        // S4 Pass. Now calculate final acceptance/scholarship.
-
         // Final Check: Interview score must be high enough, and previous academic performance must support scholarship.
 
         // Academic Score (Percentage) from S2 is the main factor
@@ -267,7 +262,6 @@ function renderForm(state) {
             `;
       break;
   }
-
   admissionForm.innerHTML = html;
 }
 
@@ -324,11 +318,9 @@ function renderResultDashboard() {
   // Find the S2 score for display
   const academicStep = history.find((h) => h.from === "S2");
   const academicPercentage = academicStep ? academicStep.stageScore : "N/A";
-  // Student Information Section (Pre-DFA Data)
   let studentInfoHTML = `
     <h2>🎓 Admission Decision Report</h2>
     <p><strong>Student Name:</strong> ${studentInfo.name || "-"}</p>
-    <p><strong>Father Name:</strong> ${studentInfo.father || "-"}</p>
     <p><strong>Registration No:</strong> ${studentInfo.regNo || "-"}</p>
     <p><strong>Program:</strong> ${studentInfo.program || "-"}</p>
     <hr>
@@ -339,14 +331,12 @@ function renderResultDashboard() {
   <h2>${
     isAccepted
       ? "FINAL DECISION: " + decisionText
-      : "❌ FINAL DECISION: Rejected"
+      : "FINAL DECISION: Rejected"
   }</h2>
   <p class="outcome-text">
       <strong>Decision:</strong> ${decisionText}
-      <br>
-      <strong>Academic Score (S2):</strong> ${academicPercentage}%
   </p>
-  <h3>🔍 Evaluation Summary</h3>
+  <h3>Evaluation Summary</h3>
 `;
 
   if (isAccepted) {
@@ -361,9 +351,8 @@ function renderResultDashboard() {
       STATES[failureStep.from]
     }** because the condition "${failureStep.condition}" was not met.</p>`;
   }
-
   html +=
-    '<button onclick="window.print()" class="action-btn" style="background-color:#4CAF50; color:white; margin-top:20px;">🖨️ Print Simulation Report</button>';
+    '<button onclick="window.print()" class="action-btn" style="background-color:#4CAF50; color:white; margin-top:20px;">rint Simulation Report</button>';
   resultDashboard.innerHTML = html;
 }
 
@@ -430,6 +419,8 @@ function resetSimulation() {
   scholarshipTier = 0;
   historyLog.innerHTML = "";
   resultDashboard.classList.add("hidden");
+  document.getElementById("admission-panel").classList.add("hidden");
+  document.getElementById('student-info-panel').classList.remove('hidden')
   updateUI();
 }
 
@@ -437,7 +428,5 @@ document.addEventListener("DOMContentLoaded", () => {
   transitionButton.addEventListener("click", handleSubmit);
   admissionForm.addEventListener("submit", handleSubmit);
   resetButton.addEventListener("click", resetSimulation);
-  runTestButton.addEventListener("click", runTestCases);
-
   updateUI();
 });
