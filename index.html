@@ -36,32 +36,43 @@
         <h2>Transition Log</h2>
         <ul id="history-log"></ul>
       </div>
-      <div class="panel" id="student-info-panel">
+      <div class="panel student-info-panel" id="student-info-panel">
   <h2>🧾 Applicant Information</h2>
 
-  <form id="student-info-form">
-    <label>Student Name</label>
-    <input type="text" id="studentName" required>
+  <form id="student-info-form" class="student-info-form">
 
-    <label>Father Name</label>
-    <input type="text" id="fatherName" required>
+    <div class="form-group">
+      <label>Student Name</label>
+      <input type="text" id="studentName" required />
+    </div>
 
-    <label>Registration / CNIC</label>
-    <input type="text" id="regNo" required>
+    <div class="form-group">
+      <label>Father Name</label>
+      <input type="text" id="fatherName" required />
+    </div>
 
-    <label>Program Applied</label>
-    <select id="program" required>
-      <option value="">Select Program</option>
-      <option>BS Computer Science</option>
-      <option>BS Software Engineering</option>
-      <option>BS Artificial Intelligence</option>
-    </select>
+    <div class="form-group">
+      <label>Registration / CNIC</label>
+      <input type="text" id="regNo" required />
+    </div>
+
+    <div class="form-group">
+      <label>Program Applied</label>
+      <select id="program" required>
+        <option value="">Select Program</option>
+        <option>BS Computer Science</option>
+        <option>BS Software Engineering</option>
+        <option>BS Artificial Intelligence</option>
+      </select>
+    </div>
 
     <button type="submit" class="action-btn">
       Start Admission Process
     </button>
+
   </form>
 </div>
+
 
       <div class="panel admission-panel hidden" id="admission-panel">
         <h2 id="stage-title">S0: Form Submitted (Initial State)</h2>

@@ -154,13 +154,15 @@ header {
     margin: 15px;
     padding: 18px;
   }
-
+  
   .form-group input,
   .form-group select {
     padding: 10px;
     font-size: 0.95em;
   }
-
+  #dmission-panel {
+    margin: 10px;
+  }
   .start-btn {
     font-size: 1em;
   }
@@ -178,7 +180,10 @@ header {
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
   width: 100%;
+  margin: 20px auto;
+
 }
 
 .dfa-panel {
