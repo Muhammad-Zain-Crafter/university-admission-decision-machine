@@ -7,6 +7,27 @@ const STATES = {
   S5: "Accepted / Accepted with Scholarship (Accept State)",
   S6: "Rejected (Reject State)",
 };
+let studentInfo = {};
+
+// student info
+document
+  .getElementById("student-info-form")
+  .addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    studentInfo = {
+      name: studentName.value,
+      father: fatherName.value,
+      regNo: regNo.value,
+      program: program.value,
+    };
+
+    document.getElementById("admission-panel").classList.remove("hidden");
+    document.getElementById("student-info-panel").classList.add("hidden");
+
+    currentState = "S0";
+    updateUI();
+  });
 
 const THRESHOLDS = {
   ACADEMIC_PASS: 60, // Minimum % for acceptance
@@ -303,20 +324,30 @@ function renderResultDashboard() {
   // Find the S2 score for display
   const academicStep = history.find((h) => h.from === "S2");
   const academicPercentage = academicStep ? academicStep.stageScore : "N/A";
+  // Student Information Section (Pre-DFA Data)
+  let studentInfoHTML = `
+    <h2>🎓 Admission Decision Report</h2>
+    <p><strong>Student Name:</strong> ${studentInfo.name || "-"}</p>
+    <p><strong>Father Name:</strong> ${studentInfo.father || "-"}</p>
+    <p><strong>Registration No:</strong> ${studentInfo.regNo || "-"}</p>
+    <p><strong>Program:</strong> ${studentInfo.program || "-"}</p>
+    <hr>
+  `;
 
   let html = `
-        <h2>${
-          isAccepted
-            ? "🎉 FINAL DECISION: " + decisionText
-            : "❌ FINAL DECISION: Rejected"
-        }</h2>
-        <p class="outcome-text">
-            <strong>Decision: ${decisionText}</strong>
-            <br>
-            Academic Score (S2): ${academicPercentage}%
-        </p>
-        <h3>🔍 Evaluation Summary</h3>
-    `;
+  ${studentInfoHTML}
+  <h2>${
+    isAccepted
+      ? "FINAL DECISION: " + decisionText
+      : "❌ FINAL DECISION: Rejected"
+  }</h2>
+  <p class="outcome-text">
+      <strong>Decision:</strong> ${decisionText}
+      <br>
+      <strong>Academic Score (S2):</strong> ${academicPercentage}%
+  </p>
+  <h3>🔍 Evaluation Summary</h3>
+`;
 
   if (isAccepted) {
     html += `<p>Congratulations! You successfully passed all required stages of the evaluation process. ${
@@ -330,8 +361,9 @@ function renderResultDashboard() {
       STATES[failureStep.from]
     }** because the condition "${failureStep.condition}" was not met.</p>`;
   }
-  
-   html += '<button onclick="window.print()" class="action-btn" style="background-color:#4CAF50; color:white; margin-top:20px;">🖨️ Print Simulation Report</button>';
+
+  html +=
+    '<button onclick="window.print()" class="action-btn" style="background-color:#4CAF50; color:white; margin-top:20px;">🖨️ Print Simulation Report</button>';
   resultDashboard.innerHTML = html;
 }
 
