@@ -205,9 +205,9 @@ function renderResultDashboard() {
   let studentInfoHTML = `
     <h2>🎓 Admission Decision Report</h2>
     <div class="student-info-card">
-      <p><strong>Student Name:</strong> ${studentInfo.name || "-"}</p>
-      <p><strong>Registration No:</strong> ${studentInfo.regNo || "-"}</p>
-      <p><strong>Program:</strong> ${studentInfo.program || "-"}</p>
+      <p><strong>Student Name:</strong> ${Info.name || "-"}</p>
+      <p><strong>Registration No:</strong> ${Info.regNum || "-"}</p>
+      <p><strong>Program:</strong> ${Info.program || "-"}</p>
     </div>
     <hr>
   `;
@@ -390,17 +390,20 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Student info form:
-document
-  .getElementById("student-info-form")
-  .addEventListener("submit", function (e) {
-    e.preventDefault();
-    studentInfo = {
-      name: document.getElementById("studentName").value,
-      regNo: document.getElementById("regNo").value,
-      program: document.getElementById("program").value,
-    };
-    document.getElementById("admission-panel").classList.remove("hidden");
+const studentInfoForm = document.querySelector('#studentInfo-form');
+studentInfoForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const name = document.querySelector('#studentName');
+  const regNum = document.querySelector('#regNum');
+  const program = document.querySelector('#program');
+  Info = {
+    name: name.value,
+    regNum: regNum.value,
+    program: program.value
+  }
+   document.getElementById("admission-panel").classList.remove("hidden");
     document.getElementById("student-info-panel").classList.add("hidden");
     currentState = "S1";
     updateUI();
-  });
+
+})
