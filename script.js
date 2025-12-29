@@ -1,6 +1,6 @@
-const STATES = {
+const States = {
   S1: "Documentation Submission & Verification",
-  S2: "Academic Evaluation (Percentage Based)",
+  S2: "Academic Evaluation",
   S3: "Extracurricular Activities Check",
   S4: "Interview Evaluation (Percentage)",
   S5: "Accepted (Accept State)",
@@ -20,8 +20,7 @@ const THRESHOLDS = {
   TOTAL_MAX_SCORE: 1200,
 };
 
-// UI elements
-const stageTitle = document.getElementById("stage-title");
+const stateTitle = document.getElementById("stage-title");
 const admissionForm = document.getElementById("admission-form");
 const transitionButton = document.getElementById("transition-button");
 const historyLog = document.getElementById("history-log");
@@ -29,11 +28,11 @@ const currentStateDisplay = document.getElementById("current-state-display");
 const resultDashboard = document.getElementById("result-dashboard");
 const resetButton = document.getElementById("reset-button");
 
-// ----- DFA Transition Logic -----
+// Transitional Log:
 function transition(current, inputs) {
-  let nextState = "S6"; // default Rejected
+  let nextState = "S6"; // default reject
   let outcome = "Rejected";
-  let condition = "Transition Failed";
+  let condition = "";
   let score = 0;
 
   switch (current) {
@@ -41,41 +40,39 @@ function transition(current, inputs) {
       if (inputs.documentsVerified) {
         nextState = "S2";
         outcome = "Documents Verified";
-        condition = "All Mandatory Documents Validated";
+        condition = "Mandatory documents verified";
       } else {
-        condition = "Mandatory Document Failure";
+        condition = "Mandatory documents missing";
       }
       break;
 
     case "S2":
       const marks2ndYear = inputs.marks2ndYear;
       const marksAdmissionTest = inputs.marksAdmissionTest;
+
       score = Math.round(
-        ((marks2ndYear + marksAdmissionTest) / THRESHOLDS.TOTAL_MAX_SCORE) * 100
+        ((marks2ndYear + marksAdmissionTest) /
+          THRESHOLDS.TOTAL_MAX_SCORE) *
+          100
       );
 
       if (score >= THRESHOLDS.ACADEMIC_PASS) {
         nextState = "S3";
-        outcome = `Academic Pass (Score: ${score}%)`;
-        condition = `Combined Percentage ${score}% ≥ ${THRESHOLDS.ACADEMIC_PASS}%`;
+        outcome = `Academic Pass (${score}%)`;
+        condition = `Academic score ≥ ${THRESHOLDS.ACADEMIC_PASS}%`;
       } else {
-        condition = `Combined Percentage ${score}% < ${THRESHOLDS.ACADEMIC_PASS}%`;
+        condition = `Academic score < ${THRESHOLDS.ACADEMIC_PASS}%`;
       }
       break;
 
     case "S3":
-      const activityCount = inputs.activityCount;
-      if (activityCount >= 1) {
-        // Minimum 1 activity required
+      if (inputs.activityCount >= 1) {
         nextState = "S4";
-        outcome = `Activities Recorded (Count: ${activityCount})`;
+        outcome = "Extracurricular Requirement Met";
+        condition = "At least 1 extracurricular activity";
         score = 100;
-        condition = "Minimum activity requirement met";
       } else {
-        nextState = "S6"; // Reject if no activity
-        outcome = "Rejected";
-        condition = "Minimum 1 extracurricular activity required";
-        score = 0;
+        condition = "No extracurricular activities";
       }
       break;
 
@@ -84,8 +81,9 @@ function transition(current, inputs) {
       if (score >= THRESHOLDS.INTERVIEW_PASS) {
         nextState = "S5";
         outcome = "Accepted";
+        condition = `Interview score ≥ ${THRESHOLDS.INTERVIEW_PASS}%`;
       } else {
-        condition = `Interview Score ${score}% < ${THRESHOLDS.INTERVIEW_PASS}%`;
+        condition = `Interview score < ${THRESHOLDS.INTERVIEW_PASS}%`;
       }
       break;
   }
@@ -93,7 +91,8 @@ function transition(current, inputs) {
   return { nextState, outcome, condition, stageScore: score };
 }
 
-// ----- Render Form for Each Stage -----
+
+// Render Form for Each Stage: 
 function renderForm(state) {
   let html = "";
   let buttonText =
@@ -155,9 +154,9 @@ function renderForm(state) {
   admissionForm.innerHTML = html;
 }
 
-// ----- Update UI -----
+// Update UI:
 function updateUI() {
-  stageTitle.textContent = `${currentState}: ${STATES[currentState]}`;
+  stateTitle.textContent = `${currentState}: ${States[currentState]}`;
   currentStateDisplay.textContent = currentState;
   currentStateDisplay.className = `state-tag s${currentState.slice(1)}`;
 
@@ -174,7 +173,7 @@ function updateUI() {
   }
 }
 
-// ----- Update Log -----
+// Log update:
 function updateLog(fromState, toState, outcome, condition, score) {
   if (fromState === "S0") return;
 
@@ -192,7 +191,7 @@ function updateLog(fromState, toState, outcome, condition, score) {
   historyLog.prepend(listItem);
 }
 
-// ----- Render Result Dashboard -----
+// Result dashboard:
 function renderResultDashboard() {
   const lastTransition = history[history.length - 1];
   const isAccepted = lastTransition.to === "S5";
@@ -226,14 +225,14 @@ function renderResultDashboard() {
   if (!isAccepted) {
     const failureStep = history.find((step) => step.to === "S6");
     html += `<p>The application was rejected at <strong>${failureStep.from}: ${
-      STATES[failureStep.from]
+      States[failureStep.from]
     }</strong>.</p>`;
   }
 
   resultDashboard.innerHTML = html;
 }
 
-// ----- Handle Form Submission -----
+// Form handling:
 function handleSubmit(event) {
   event.preventDefault();
 
@@ -278,7 +277,7 @@ function handleSubmit(event) {
   updateUI();
 }
 
-// ----- Reset Simulation -----
+// Reset process:
 function resetSimulation() {
   currentState = "S1";
   history = [];
@@ -290,7 +289,7 @@ function resetSimulation() {
   updateUI();
 }
 
-// ----- DFA Rendering (unchanged) -----
+// DFA:
 function renderDFA() {
   if (!history.length) return;
   const old = document.getElementById("dfa-container");
@@ -325,15 +324,40 @@ function renderDFA() {
       </g>
     `;
   });
+let arrows = "";
+let labels = "";
 
-  let arrows = "";
-  history.forEach((step) => {
-    const from = pos[step.from],
-      to = pos[step.to];
-    arrows += `<line x1="${from.x + 30}" y1="${from.y}" x2="${to.x - 30}" y2="${
-      to.y
-    }" stroke="#ff5722" stroke-width="3" marker-end="url(#arrowhead)" />`;
-  });
+history.forEach((step) => {
+  const from = pos[step.from];
+  const to = pos[step.to];
+
+  const midX = (from.x + to.x) / 2;
+  const midY = from.y - 40;
+
+  arrows += `
+    <line x1="${from.x + 30}" y1="${from.y}"
+          x2="${to.x - 30}" y2="${to.y}"
+          stroke="#ff5722" stroke-width="3"
+          marker-end="url(#arrowhead)" />
+  `;
+
+  labels += `
+  <g>
+    <rect x="${midX - 90}" y="${midY - 14}"
+          width="180" height="22"
+          rx="5" ry="5"
+          fill="#ffffff" stroke="#ccc"/>
+    <text x="${midX}" y="${midY}"
+          text-anchor="middle"
+          font-size="12"
+          font-weight="600"
+          fill="#000">
+      ${step.condition}
+    </text>
+  </g>
+`;
+});
+
 
   const startArrow = `<line x1="${pos[states[0]].x - 70}" y1="${centerY}" x2="${
     pos[states[0]].x - 30
@@ -349,14 +373,15 @@ function renderDFA() {
             <path d="M0,0 L0,10 L10,5 Z" fill="#000"/>
           </marker>
         </defs>
-        ${startArrow}${arrows}${nodes}
+        ${startArrow}${arrows}${labels}${nodes}
+
       </svg>
     </div>
   `;
   resultDashboard.insertAdjacentHTML("beforeend", svg);
 }
 
-// ----- Initial Setup -----
+// Initial setup:
 document.addEventListener("DOMContentLoaded", () => {
   transitionButton.addEventListener("click", handleSubmit);
   admissionForm.addEventListener("submit", handleSubmit);
@@ -364,7 +389,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateUI();
 });
 
-// ----- Student Info Form Submission -----
+// Student info form:
 document
   .getElementById("student-info-form")
   .addEventListener("submit", function (e) {
