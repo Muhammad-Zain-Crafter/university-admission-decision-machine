@@ -285,7 +285,7 @@ function resetSimulation() {
   historyLog.innerHTML = "";
   resultDashboard.classList.add("hidden");
   document.getElementById("admission-panel").classList.add("hidden");
-  document.getElementById("student-info-panel").classList.remove("hidden");
+  document.getElementById("studentInfo-panel").classList.remove("hidden");
   updateUI();
 }
 
@@ -401,9 +401,8 @@ studentInfoForm.addEventListener('submit', function(e) {
     regNum: regNum.value,
     program: program.value
   }
-   document.getElementById("admission-panel").classList.remove("hidden");
-    document.getElementById("student-info-panel").classList.add("hidden");
+    document.querySelector("#admission-panel").classList.remove("hidden");
+    document.querySelector("#studentInfo-panel").classList.add("hidden");
     currentState = "S1";
     updateUI();
-
 })
